@@ -1,0 +1,18 @@
+[package]
+name = "vema"
+version = "0.1.0"
+edition = "2024"
+
+[features]
+default = []
+
+# Below here are dev-mostly features that should not be needed by
+# regular users.
+
+# Enable code paths requiring a nightly toolchain. This feature is only meant to
+# be used for testing and benchmarking purposes, not for the core library, which
+# is expected to work on stable.
+nightly = []
+
+[dev-dependencies]
+nalgebra = { version = "0.33", default-features = false, features = ["std"] }
