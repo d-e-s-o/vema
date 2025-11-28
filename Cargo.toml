@@ -5,6 +5,7 @@ edition = "2024"
 authors = ["Daniel Mueller <deso@posteo.net>"]
 license = "Apache-2.0 OR MIT"
 repository = "https://github.com/d-e-s-o/vema.git"
+documentation = "https://docs.rs/vema"
 categories = [
   "algorithms",
   "game-development",
