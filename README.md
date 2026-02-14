@@ -6,6 +6,7 @@ vema
 ====
 
 - [Documentation][docs-rs]
+- [Changelog](CHANGELOG.md)
 
 Vector and Matrix types and associated operations.
 

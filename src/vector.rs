@@ -1,4 +1,4 @@
-// Copyright (C) 2024-2025 Daniel Mueller <deso@posteo.net>
+// Copyright (C) 2024-2026 Daniel Mueller <deso@posteo.net>
 // SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 #[cfg(test)]
@@ -194,7 +194,6 @@ impl<T> From<(T, T, T)> for Vector<T, 3> {
 impl<T, const N: usize> Add<Self> for Vector<T, N>
 where
   T: Copy + AddAssign<T>,
-  Self: AddAssign,
 {
   type Output = Self;
 
@@ -220,7 +219,6 @@ where
 impl<T, const N: usize> Sub<Self> for Vector<T, N>
 where
   T: Copy + SubAssign<T>,
-  Self: SubAssign,
 {
   type Output = Self;
 
@@ -239,6 +237,56 @@ where
   fn sub_assign(&mut self, rhs: Self) {
     for i in 0..N {
       self[i] -= rhs[i];
+    }
+  }
+}
+
+impl<T, const N: usize> Mul<Self> for Vector<T, N>
+where
+  T: Copy + MulAssign<T>,
+{
+  type Output = Self;
+
+  #[inline]
+  fn mul(mut self, other: Self) -> Self::Output {
+    self *= other;
+    self
+  }
+}
+
+impl<T, const N: usize> MulAssign<Self> for Vector<T, N>
+where
+  T: Copy + MulAssign<T>,
+{
+  #[inline]
+  fn mul_assign(&mut self, rhs: Self) {
+    for i in 0..N {
+      self[i] *= rhs[i];
+    }
+  }
+}
+
+impl<T, const N: usize> Div<Self> for Vector<T, N>
+where
+  T: Copy + DivAssign<T>,
+{
+  type Output = Self;
+
+  #[inline]
+  fn div(mut self, other: Self) -> Self::Output {
+    self /= other;
+    self
+  }
+}
+
+impl<T, const N: usize> DivAssign<Self> for Vector<T, N>
+where
+  T: Copy + DivAssign<T>,
+{
+  #[inline]
+  fn div_assign(&mut self, rhs: Self) {
+    for i in 0..N {
+      self[i] /= rhs[i];
     }
   }
 }
@@ -391,6 +439,17 @@ mod tests {
     assert_eq!(v3, VecI::new(1, 1, 2));
     assert_eq!(v3 - v2, v1);
     assert_eq!(v3 - v1, v2);
+  }
+
+  /// Check that we can multiply and divide vectors.
+  #[test]
+  fn multiplication_division() {
+    let v1 = VecI::new(1, 7, 3);
+    let v2 = VecI::new(3, 2, 4);
+    let v3 = v1 * v2;
+    assert_eq!(v3, VecI::new(3, 14, 12));
+    assert_eq!(v3 / v2, v1);
+    assert_eq!(v3 / v1, v2);
   }
 
   /// Check that we can scale a vector by multiplication/division with a
